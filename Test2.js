@@ -10,6 +10,11 @@ function formatNumber(num) {
   return `${num}`;
 }
 
+function validation(y, x) {
+  if ((y + x) % 2 === 0) return true;
+  return false;
+}
+
 function solution() {
   let count = 1;
   let max = n;
@@ -19,15 +24,15 @@ function solution() {
 
   while (max !== 0) {
     if (dir === 0) {
-      for (let i = 0; i < max; i++) matrix[y][++x] = formatNumber(count++);
+      for (let i = 0; i < max; i++) matrix[y][++x] = formatNumber(validation(y, x) === true ? count++ : 0);
       max--;
     } else if (dir === 1) {
-      for (let i = 0; i < max; i++) matrix[++y][x] = formatNumber(count++);
+      for (let i = 0; i < max; i++) matrix[++y][x] = formatNumber(validation(y, x) === true ? count++ : 0);
     } else if (dir === 2) {
-      for (let i = 0; i < max; i++) matrix[y][--x] = formatNumber(count++);
+      for (let i = 0; i < max; i++) matrix[y][--x] = formatNumber(validation(y, x) === true ? count++ : 0);
       max--;
     } else if (dir === 3) {
-      for (let i = 0; i < max; i++) matrix[--y][x] = formatNumber(count++);
+      for (let i = 0; i < max; i++) matrix[--y][x] = formatNumber(validation(y, x) === true ? count++ : 0);
     }
     dir = (dir + 1) % 4;
   }
