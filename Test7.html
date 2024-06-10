@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <img src="image1.jpg" alt="Image 1" width="800" height="600">
+    <img src="image2.jpg" alt="Image 2" width="800" height="600">
+    <img src="image3.jpg" alt="Image 3" width="800" height="600" loading="lazy" decoding="async">
+  </body>
+</html>
+<!-- 1. 이미지 로딩 시간 개선
+가장 좋은 방법은, S3 AWS Firebase 등 이미지 데이터를 디코딩하여 최적화된 이미지로 전처리하는 방법이겠지만,
+지금 주어진 코드에선 이미 '대형 이미지'이기 때문에, 해당 로직은 넘어가겠습니다.
+
+브라우저는 이미지 로딩에 최적화되어있지 않습니다.
+여기에서 사용자가 화면을 보고 있을 때 (스크롤 하기 전) loading lazy를 걸어 우선순위를 뒤로 미룹니다.
+또한 async를 걸어 이미지 디코딩 또한 미뤄버립니다.
+
+추가적으로, 사용자의 입장에선 youtube의 스켈레톤 UI처럼 렌더링 되기 전
+하얀 화면이 아닌 로딩의 진척도를 알 수 있는 방법을 선택하는 것이 좋아보입니다.
+-->
+
+<!-- 2. 스크립트 로딩 최적화
+
+A. head안 그냥 script 넣기 -> HTML이 파싱하다가 script 태그를 만나면 멈춰버립니다. -> 기각
+
+B. body 끝 부분 script 넣기 -> HTML 컨텐츠는 빨리 보겠지만, JS의존도가 높을 경우 정상적인 사이트 이용은 불가능 -> 기각
+
+C. async 태그 추가 -> 병렬로 HTML 파싱하며 JS 파일을 다운로드합니다. 이후 JS 파일을 실행하는데, 그동안 HTML은 파싱되지않습니다.
+뿐만 아니라 특정 요소가 파싱되기 전 DOM 요소를 건든다면(쿼리셀럭터 등) 정상적인 이용은 불가능합니다.
+
+D. defer 태그 추가 -> 병렬로 HTML 파싱 + JS 패칭합니다. (여기까진 async와 동일)
+이후 HTML 파싱이 완료되면 JS를 실행하기에, async보다 안전하다는 장점이 있습니다.
+
+-->
